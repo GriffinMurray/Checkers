@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://mxap8c4m0fnc"]
+
+[ext_resource type="PackedScene" uid="uid://btx8017ntuu3b" path="res://scenes/pieces/piece.tscn" id="1_484fo"]
+[ext_resource type="Script" path="res://scenes/pieces/black_piece.gd" id="2_e1hwk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dobpx"]
+albedo_color = Color(0.0728426, 0.0728426, 0.0728426, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_t54r1"]
+material = SubResource("StandardMaterial3D_dobpx")
+top_radius = 0.4
+bottom_radius = 0.4
+height = 0.1
+
+[node name="BlackPiece" instance=ExtResource("1_484fo")]
+script = ExtResource("2_e1hwk")
+
+[node name="MeshInstance3D" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("CylinderMesh_t54r1")
