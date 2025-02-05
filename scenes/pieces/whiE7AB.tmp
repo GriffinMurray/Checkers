@@ -1,14 +1,22 @@
-[gd_scene load_steps=5 format=3 uid="uid://0guj2sh47xmm"]
+[gd_scene load_steps=7 format=3 uid="uid://0guj2sh47xmm"]
 
 [ext_resource type="PackedScene" uid="uid://btx8017ntuu3b" path="res://scenes/pieces/piece.tscn" id="1_dclmg"]
 [ext_resource type="Script" path="res://scenes/pieces/white_piece.gd" id="2_hfhnr"]
+[ext_resource type="Shader" path="res://shaders/outline.gdshader" id="3_m8xyh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3oods"]
+render_priority = 0
+shader = ExtResource("3_m8xyh")
+shader_parameter/normal_threshold = 0.1
+shader_parameter/depth_threshold = 0.05
+shader_parameter/depth_artifact_correction_coef = 2.0
+shader_parameter/outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_auraa"]
-resource_local_to_scene = true
-albedo_color = Color(0.800491, 0.800491, 0.800491, 1)
+next_pass = SubResource("ShaderMaterial_3oods")
+albedo_color = Color(0.458405, 0.458405, 0.458405, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_v7ypo"]
-resource_local_to_scene = true
 lightmap_size_hint = Vector2i(14, 8)
 material = SubResource("StandardMaterial3D_auraa")
 top_radius = 0.4
@@ -21,6 +29,3 @@ script = ExtResource("2_hfhnr")
 [node name="MeshInstance3D" parent="." index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
 mesh = SubResource("CylinderMesh_v7ypo")
-
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

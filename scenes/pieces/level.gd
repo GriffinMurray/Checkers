@@ -20,7 +20,7 @@ func _physics_process(delta: float) -> void:
 	
 	var position_vector = Vector3(0,0,camera_zoom) * camera_zoom_speed * delta
 	
-	$Marker3D/Camera3D.position += position_vector
-	$Marker3D/Camera3D.position.z = clamp($Marker3D/Camera3D.position.z, 1, 20)
+	$Marker3D/Player.position += position_vector
+	$Marker3D/Player.position.z = clamp($Marker3D/Player.position.z, 1, 20)
 	
 	

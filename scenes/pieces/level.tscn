@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://d01kqxttyhxmd"]
+[gd_scene load_steps=4 format=3 uid="uid://d01kqxttyhxmd"]
 
 [ext_resource type="Script" path="res://scenes/pieces/level.gd" id="1_dr13x"]
 [ext_resource type="PackedScene" uid="uid://bp57edr303kmv" path="res://scenes/board.tscn" id="1_wu1hg"]
+[ext_resource type="PackedScene" uid="uid://mp4bbjd18s2n" path="res://scenes/player.tscn" id="3_e3fpk"]
 
 [node name="Level" type="Node3D"]
 script = ExtResource("1_dr13x")
@@ -13,9 +14,7 @@ shadow_enabled = true
 [node name="Board" parent="." instance=ExtResource("1_wu1hg")]
 
 [node name="Marker3D" type="Marker3D" parent="."]
-transform = Transform3D(1, 2.18557e-08, -3.78552e-08, 1.13133e-08, 0.707107, 0.707107, 4.22219e-08, -0.707106, 0.707106, 3.5, 0, 3.5)
+transform = Transform3D(1, 0, 0, 0, 0.707106, 0.707106, 0, -0.707106, 0.707106, 3.5, 0, 3.5)
 
-[node name="Camera3D" type="Camera3D" parent="Marker3D"]
+[node name="Player" parent="Marker3D" instance=ExtResource("3_e3fpk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
-current = true
-size = 10.0
