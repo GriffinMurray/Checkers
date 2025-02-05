@@ -35,3 +35,7 @@ func _on_mouse_exited() -> void:
 	hovering = false
 	if Globals.selected_piece == null:
 		set_albedo(base_color)
+
+func parent_square() -> Square:
+	return get_parent_node_3d().get_parent_node_3d()
+	
