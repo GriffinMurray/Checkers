@@ -5,7 +5,7 @@ class_name Piece
 var color_hex
 var base_color: Color
 var highlight_color: Color
-var highlight_offset: int = "0x555555".hex_to_int()
+var highlight_offset: int = "0x444444".hex_to_int()
 var hovering: bool
 
 
