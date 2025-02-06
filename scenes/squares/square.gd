@@ -43,8 +43,11 @@ func add_piece(p) -> void:
 	p.position = $Marker3D.position
 	
 func remove_piece() -> void:
-	piece = null
+	set_piece(null)
 
+func capture_piece(piece) -> void:
+	set_piece(null)
+	piece.queue_free()
 # instantiate white piece and add it to this square
 func spawn_white_piece():
 	set_piece(white_piece.instantiate())

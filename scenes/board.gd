@@ -94,24 +94,54 @@ func valid_move_options(source: Square) -> Array:
 		for square in adjacent_squares:
 			if square.is_empty():
 				options.append(square)
-			else:
+			#else:
+				#var behind_square = get_behind_square(source, square)
+				#if behind_square != null and behind_square.is_empty():
+					#options.append(behind_square)
+	return options
+	
+func valid_jump_options(source: Square, move_options: Array) -> Array:
+	var options = []
+	if Globals.piece_is_selected():
+		var piece = Globals.selected_piece
+		var adjacent_squares = get_adjacent_squares(piece.parent_square())
+		for square in adjacent_squares:
+			if not square.is_empty():
 				var behind_square = get_behind_square(source, square)
 				if behind_square != null and behind_square.is_empty():
 					options.append(behind_square)
 	return options
 	
+	
 func _on_square_selected() -> void:
 	var source = Globals.selected_piece.parent_square()
-	var options = valid_move_options(source)
+	var move_options = valid_move_options(source)
+	var jump_options = valid_jump_options(source, move_options)
 	var target = Globals.selected_square
-	if target in options:
-		
+	if target in move_options:
 		move(source, target)
+	if target in jump_options:
+		jump(source, target)
 
 func move(source: Square, target:Square) -> void:
 	source.remove_piece()
 	target.add_piece(Globals.selected_piece)
 	
+func jump(source: Square, target: Square) -> void:
+	var jumped_square_index = []
+	var source_index = get_square_index(source)
+	var target_index = get_square_index(target)
+	
+	jumped_square_index.append(source_index[0] 
+	+ (target_index[0] - source_index[0])/2)
+	jumped_square_index.append(source_index[1] 
+	+ (target_index[1] - source_index[1])/2)
+	
+	var jumped_square: Square = board_array[jumped_square_index[0]][jumped_square_index[1]]
+	var removed_piece = jumped_square.piece
+	source.remove_piece()
+	jumped_square.capture_piece(removed_piece)
+	target.add_piece(Globals.selected_piece)
 
 
 # TODO generate board procedurally
