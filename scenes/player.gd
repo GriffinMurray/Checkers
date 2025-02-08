@@ -1,15 +1,26 @@
 extends Camera3D
 
+signal player_lost
+
+var pieces_remaining = 12
+
 var camera_rotation_speed: int = 90
 var camera_zoom_speed: int = 20
 @export var parent: Marker3D
 
+var piece_selected: Piece
+var square_selected: Square
+
 func _ready():
 	initialize()
+
 func initialize():
-	pass 
-func _physics_process(delta: float) -> void:
+	var starting_rotation_direction = Vector2(-45,45)
+	var rotation_vector = Vector3(starting_rotation_direction.x,
+		 							starting_rotation_direction.y,0)
+	parent.rotation_degrees = rotation_vector
 	
+func _physics_process(delta: float) -> void:
 	var rotation_direction_x: float = Input.get_axis("camera_up", "camera_down")
 	var rotation_direction_y: float = Input.get_axis("camera_left", "camera_right")
 	
@@ -28,4 +39,11 @@ func _physics_process(delta: float) -> void:
 	position += position_vector
 	position.z = clamp(position.z, 1, 20)
 	
-	
+func lose_piece():
+	pieces_remaining = 12
+	if pieces_remaining <= 0:
+		lose()
+
+func lose():
+	print('you lose')
+	player_lost.emit()
