@@ -3,5 +3,35 @@ extends Node
 var selected_piece: Piece
 var selected_square: Square
 
-func piece_is_selected() -> bool:
+var game_type
+var game_state
+var player_turn
+
+func is_piece_selected():
 	return selected_piece != null
+func get_selected_piece():
+	return selected_piece
+func set_selected_piece(piece) -> void:
+	selected_piece = piece
+	
+func is_square_selected():
+	return selected_square != null
+func get_selected_square():
+	return selected_square
+func set_selected_square(str) -> void:
+	selected_square = str
+	
+func get_game_type():
+	return game_type
+func set_game_type(str) -> void:
+	game_type = str
+	
+func get_game_state():
+	return game_state
+func set_game_state(str) -> void:
+	game_state = str
+	
+func get_player_turn():
+	return player_turn
+func set_player_turn(str) -> void:
+	player_turn = str

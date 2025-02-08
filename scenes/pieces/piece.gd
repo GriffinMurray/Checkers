@@ -2,40 +2,43 @@ extends CharacterBody3D
 
 class_name Piece
 
+signal hovering(piece: Piece)
+signal stop_hovering(piece: Piece)
+
 var color_hex
 var base_color: Color
 var highlight_color: Color
 var highlight_offset: int = "0x444444".hex_to_int()
-var hovering: bool
-
-
-func _input(event):
-	if event is InputEventMouseButton and event.pressed:
-		if event.button_index == MOUSE_BUTTON_LEFT:
-			if hovering:
-				if Globals.selected_piece == null:
-					Globals.selected_piece = self
-					set_albedo(highlight_color)
-					
-		if event.button_index == MOUSE_BUTTON_RIGHT:
-			if Globals.selected_piece == self:
-				Globals.selected_piece = null
-				set_albedo(base_color)
+var square: Square
 
 func set_albedo(color):
 	var mat: Material = self.get_child(0).mesh.surface_get_material(0)
 	mat.albedo_color = color
 	
+func get_parent_square():
+	return square
+func set_parent_square(s) -> void:
+	square = s
+	
+func move(target) -> void:
+	square.remove_piece()
+	target.move_piece(self)
+	square = target
+	set_albedo(base_color)
+	Globals.set_selected_piece(null)
+	Globals.set_selected_square(null)
+	
+func jump(jumped_piece, target) -> void:
+	move(target)
+	jumped_piece.queue_free()
+	
 func _on_mouse_entered() -> void:
-	hovering = true
-	if Globals.selected_piece == null:
-		set_albedo(highlight_color)
-		
+	if not Globals.is_piece_selected():
+		hovering.emit(self)
+	
 func _on_mouse_exited() -> void:
-	hovering = false
-	if Globals.selected_piece == null:
-		set_albedo(base_color)
+	if not Globals.is_piece_selected():
+		stop_hovering.emit(self)
 
-func parent_square() -> Square:
-	return get_parent_node_3d().get_parent_node_3d()
+
 	

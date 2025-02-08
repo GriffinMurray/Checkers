@@ -15,7 +15,7 @@ top_radius = 0.4
 bottom_radius = 0.4
 height = 0.1
 
-[node name="WhitePiece" instance=ExtResource("1_dclmg")]
+[node name="WhitePiece" groups=["white_pieces"] instance=ExtResource("1_dclmg")]
 script = ExtResource("2_hfhnr")
 
 [node name="MeshInstance3D" parent="." index="0"]
