@@ -2,6 +2,7 @@ extends Node
 
 var selected_piece: Piece
 var selected_square: Square
+var moving_again = false
 
 var game_type
 var game_state
@@ -35,3 +36,9 @@ func get_player_turn():
 	return player_turn
 func set_player_turn(str) -> void:
 	player_turn = str
+	
+func toggle_player_turn() -> void:
+	if get_player_turn() == "white":
+		set_player_turn("black")
+	elif get_player_turn() == "black":
+		set_player_turn("white")

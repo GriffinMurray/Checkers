@@ -15,6 +15,12 @@ func set_albedo(color):
 	var mat: Material = self.get_child(0).mesh.surface_get_material(0)
 	mat.albedo_color = color
 	
+func highlight():
+	set_albedo(highlight_color)
+	
+func remove_highlight():
+	set_albedo(base_color)
+	
 func get_parent_square():
 	return square
 func set_parent_square(s) -> void:
@@ -25,19 +31,18 @@ func move(target) -> void:
 	target.move_piece(self)
 	square = target
 	set_albedo(base_color)
-	Globals.set_selected_piece(null)
-	Globals.set_selected_square(null)
 	
 func jump(jumped_piece, target) -> void:
 	move(target)
 	jumped_piece.queue_free()
 	
 func _on_mouse_entered() -> void:
-	if not Globals.is_piece_selected():
-		hovering.emit(self)
+	if (Globals.get_player_turn() == "white" and get_groups()[0] == "white_pieces"
+		or Globals.get_player_turn() == "black" and get_groups()[0] == "black_pieces"):
+		if not Globals.is_piece_selected():
+			hovering.emit(self)
 	
 func _on_mouse_exited() -> void:
-	if not Globals.is_piece_selected():
 		stop_hovering.emit(self)
 
 

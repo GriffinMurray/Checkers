@@ -18,7 +18,8 @@ func get_piece():
 	return piece
 func set_piece(p) -> void:
 	piece = p
-	$Marker3D.add_child(piece)
+	if piece != null:
+		$Marker3D.add_child(piece)
 
 func move_piece(p) -> void:
 	piece = p
@@ -36,6 +37,13 @@ func capture_piece(p) -> void:
 func set_albedo(color):
 	var mat: Material = self.get_child(0).mesh.surface_get_material(0)
 	mat.albedo_color = color
+
+func highlight():
+	set_albedo(highlight_color)
+	
+func remove_highlight():
+	set_albedo(base_color)
+	
 
 # highlight square and consider it hovered while a piece is selected
 func _on_mouse_entered() -> void:
