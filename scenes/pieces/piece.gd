@@ -37,13 +37,10 @@ func jump(jumped_piece, target) -> void:
 	jumped_piece.queue_free()
 	
 func _on_mouse_entered() -> void:
-	if (Globals.get_player_turn() == "white" and get_groups()[0] == "white_pieces"
-		or Globals.get_player_turn() == "black" and get_groups()[0] == "black_pieces"):
-		if not Globals.is_piece_selected():
-			hovering.emit(self)
+	hovering.emit(self)
 	
 func _on_mouse_exited() -> void:
-		stop_hovering.emit(self)
+	stop_hovering.emit(self)
 
 
 	
