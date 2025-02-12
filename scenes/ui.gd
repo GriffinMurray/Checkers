@@ -11,9 +11,15 @@ func start_screen() -> void:
 	$Labels/StartText.text = "Press Start button to begin"
 	$StartButton.text = "Start"
 	
-func set_player_turn_text(str):
-	$Labels/PlayerTurn.text = "Player turn: " + str
-	if str == "white":
-		$Labels/PlayerTurn.add_theme_color_override("font_color", Color.WHITE)
-	elif str == "black":
-		$Labels/PlayerTurn.add_theme_color_override("font_color", Color.BLACK)
+func update_score(score) -> void:
+	$Labels/Score.text = ("Score: " + str(score[0]) + "-" + str(score[1]))
+	
+
+func game_over(player: String):
+	show()
+	if player == "white":
+		$Labels/StartText.text = "White loses, Black wins!"
+	elif player == "black":
+		$Labels/StartText.text = "Black loses, White wins!"
+	else:
+		$Labels/StartText.text = "ERROR"

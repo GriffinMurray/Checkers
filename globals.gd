@@ -2,7 +2,7 @@ extends Node
 
 var selected_piece: Piece
 var selected_square: Square
-var moving_again = false
+var mandatory_jumping: bool = false
 
 var game_type
 var game_state
@@ -21,6 +21,11 @@ func get_selected_square():
 	return selected_square
 func set_selected_square(str) -> void:
 	selected_square = str
+	
+func get_mandatory_jumping():
+	return mandatory_jumping
+func set_mandatory_jumping(b: bool):
+	mandatory_jumping = b
 	
 func get_game_type():
 	return game_type

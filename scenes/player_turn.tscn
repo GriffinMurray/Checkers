@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://jj1j6oeiijb0"]
+
+[ext_resource type="Script" path="res://scenes/player_turn.gd" id="1_o4ldh"]
+
+[node name="PlayerTurn" type="Control"]
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+grow_horizontal = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+script = ExtResource("1_o4ldh")
+
+[node name="PlayerTurn" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -50.5
+offset_right = 50.5
+offset_bottom = 69.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 50
+text = "Test
+"

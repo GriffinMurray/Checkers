@@ -1,11 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://d01kqxttyhxmd"]
+[gd_scene load_steps=5 format=3 uid="uid://d01kqxttyhxmd"]
 
 [ext_resource type="Script" path="res://scenes/level.gd" id="1_dr13x"]
 [ext_resource type="PackedScene" uid="uid://bp57edr303kmv" path="res://scenes/board.tscn" id="1_wu1hg"]
 [ext_resource type="PackedScene" uid="uid://mp4bbjd18s2n" path="res://scenes/player.tscn" id="3_e3fpk"]
+[ext_resource type="PackedScene" uid="uid://jj1j6oeiijb0" path="res://scenes/player_turn.tscn" id="4_4e8vk"]
 
 [node name="Level" type="Node3D"]
 script = ExtResource("1_dr13x")
+
+[node name="PlayerTurn" parent="." instance=ExtResource("4_4e8vk")]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
@@ -21,3 +24,4 @@ parent = NodePath("..")
 
 [connection signal="piece_jumped" from="Board" to="." method="_on_board_piece_jumped"]
 [connection signal="piece_moved" from="Board" to="." method="_on_board_piece_moved"]
+[connection signal="player_lose" from="Board" to="." method="_on_board_player_lose"]

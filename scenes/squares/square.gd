@@ -23,11 +23,14 @@ func set_piece(p) -> void:
 
 func move_piece(p) -> void:
 	piece = p
+	p.square.set_piece(null)
 	p.reparent($Marker3D)
 	p.position = $Marker3D.position
 	
 func remove_piece() -> void:
-	set_piece(null)
+	if piece != null:
+		piece.queue_free()
+		set_piece(null)
 
 func capture_piece(p) -> void:
 	set_piece(null)

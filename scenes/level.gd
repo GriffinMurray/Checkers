@@ -27,22 +27,29 @@ func _input(event):
 											Globals.get_selected_square(),
 											multiple_jumping)
 			elif event.button_index == MOUSE_BUTTON_RIGHT:
-				$Board.unselect_piece()
-				Globals.set_game_state(game_states[0])
+				if not Globals.get_mandatory_jumping():
+					$Board.unselect_piece()
+					Globals.set_game_state(game_states[0])
 	
 func start():
 	var button = UI.get_button()
 	button.pressed.connect(_on_start_button_pressed)
+	$PlayerTurn.hide()
 	
 func end_turn():
 	Globals.toggle_player_turn()
 	new_turn()
 	
 func new_turn():
+	Globals.set_mandatory_jumping(false)
 	Globals.toggle_player_turn()
 	Globals.set_game_state(game_states[0])
 	Globals.set_selected_piece(null)
 	Globals.set_selected_square(null)
+	$Board.generate_movable_pieces_array()
+	$PlayerTurn.update_turn_text(Globals.get_player_turn())
+	
+	
 	
 	
 func _on_start_button_pressed():
@@ -50,20 +57,22 @@ func _on_start_button_pressed():
 	Globals.set_player_turn(player_turns[0])
 	Globals.set_game_state(game_states[0])
 	$Board.initialize_game()
+	$Board.generate_movable_pieces_array()
+	$PlayerTurn.show()
+	$PlayerTurn.update_turn_text(Globals.get_player_turn())
 	UI.hide()
 	
-	
-
-
 func _on_board_piece_moved() -> void:
 	new_turn()
-
 
 func _on_board_piece_jumped(multiple: bool) -> void:
 	if multiple:
 		multiple_jumping = true
-		print("AGAIN!")
 	else:
-		print("jumping over")
-		multiple_jumping = false
 		new_turn()
+
+
+func _on_board_player_lose(player: String) -> void:
+	Globals.set_game_state(game_states[2])
+	UI.game_over(player)
+	
