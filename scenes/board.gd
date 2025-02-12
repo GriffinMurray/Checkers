@@ -7,7 +7,7 @@ signal player_lose(player: String)
 @export var white_piece: PackedScene = preload("res://scenes/pieces/white_piece.tscn")
 @export var black_piece: PackedScene = preload("res://scenes/pieces/black_piece.tscn")
 @export var white_king: PackedScene = preload("res://scenes/pieces/white_king.tscn")
-@export var black_king: PackedScene
+@export var black_king: PackedScene = preload("res://scenes/pieces/black_king.tscn")
 @export var light_square: PackedScene = preload("res://scenes/squares/light_square.tscn")
 @export var dark_square: PackedScene = preload("res://scenes/squares/dark_square.tscn")
 
@@ -31,6 +31,7 @@ func generate_board_array() -> void:
 		
 func generate_movable_pieces_array() -> void:
 	movable_pieces = []
+	
 	for piece in get_tree().get_nodes_in_group(Globals.get_player_turn()):
 		if not piece.removed and must_jump(piece):
 			movable_pieces.append(piece)
@@ -40,7 +41,10 @@ func generate_movable_pieces_array() -> void:
 		Globals.set_selected_piece(movable_pieces[0])
 		Globals.set_game_state("move")
 	if movable_pieces.size() == 0:
+		#print(get_tree().get_nodes_in_group(Globals.get_player_turn()))
 		for piece in get_tree().get_nodes_in_group(Globals.get_player_turn()):
+			if piece.is_in_group("king"):
+				print("king movable")
 			movable_pieces.append(piece)
 		Globals.set_mandatory_jumping(false)
 			
@@ -96,11 +100,9 @@ func spawn_piece(str):
 		black_pieces += 1
 		return black_piece.instantiate()
 	elif str == "white_king":
-		white_pieces += 1
-		pass
+		return white_king.instantiate()
 	elif str == "black_king":
-		black_pieces += 1
-		pass
+		return black_king.instantiate()
 		
 
 func select_piece() -> void:
@@ -277,7 +279,7 @@ func valid_jump_options(piece) -> Array:
 	for square in adjacent_squares:
 		if square.has_piece():
 			# if pieces are in different groups
-			if piece.get_groups()[0] != square.get_piece().get_groups()[0]:
+			if piece.is_in_group("white") != square.get_piece().is_in_group("white"):
 				var behind_square = get_behind_square(source, square)
 				if ((behind_square != null and 
 						not behind_square.has_piece()) or
@@ -297,6 +299,7 @@ func _on_square_stop_hovering(square: Square) -> void:
 	square.remove_highlight()
 	
 func _on_piece_hovering(piece: Piece) -> void:
+	print(piece in movable_pieces)
 	if (piece.is_in_group(Globals.player_turn) and 
 			Globals.get_game_state() == "start" and
 			piece in movable_pieces):
@@ -316,10 +319,20 @@ func _on_piece_moved(piece: Piece) -> void:
 		if piece.is_in_group("white"):
 			if get_square_index(square)[0] == board_array.size()-1:
 				square.remove_piece()
-				var king = white_king.instantiate()
+				var king = spawn_piece("white_king")
 				square.set_piece(king)
+				king.set_parent_square(square)
+				connect_player_signals(king)
+				print(get_tree().get_nodes_in_group(Globals.get_player_turn()))
+				print("king:", get_tree().get_nodes_in_group("king"))
 		elif piece.is_in_group("black"):
 			if get_square_index(square)[0] == 0:
 				square.remove_piece()
-				#black king
+				var king = black_king.instantiate()
+				square.set_piece(king)
+				king.set_parent_square(square)
+				connect_player_signals(king)
+				print(get_tree().get_nodes_in_group(Globals.get_player_turn()))
+				print("king:", get_tree().get_nodes_in_group("king"))
+	
 # TODO generate board procedurally

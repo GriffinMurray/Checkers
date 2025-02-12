@@ -17,7 +17,7 @@ func set_albedo(color):
 	var mat: Material = self.get_child(0).mesh.surface_get_material(0)
 	mat.albedo_color = color
 	if is_in_group("king"):
-		mat = self.get_child(1).mesh.surface_get_material(0)
+		mat = self.get_child(0).get_child(0).mesh.surface_get_material(0)
 		mat.albedo_color = color
 	
 func highlight():
@@ -43,6 +43,7 @@ func jump(jumped_piece, target) -> void:
 
 	
 func _on_mouse_entered() -> void:
+	print(self)
 	hovering.emit(self)
 	
 func _on_mouse_exited() -> void:

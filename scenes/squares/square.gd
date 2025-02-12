@@ -25,7 +25,7 @@ func move_piece(p) -> void:
 	piece = p
 	p.square.set_piece(null)
 	p.reparent($Marker3D)
-	p.position = $Marker3D.position
+	p.global_position = $Marker3D.global_position
 	
 func remove_piece() -> void:
 	if piece != null:
