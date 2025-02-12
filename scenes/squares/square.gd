@@ -36,6 +36,7 @@ func capture_piece(p) -> void:
 	set_piece(null)
 	p.queue_free()
 
+
 # set color of the material to value of color
 func set_albedo(color):
 	var mat: Material = self.get_child(0).mesh.surface_get_material(0)

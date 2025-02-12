@@ -11,7 +11,7 @@ albedo_color = Color(0.800491, 0.800491, 0.800491, 1)
 resource_local_to_scene = true
 lightmap_size_hint = Vector2i(14, 8)
 material = SubResource("StandardMaterial3D_auraa")
-top_radius = 0.4
+top_radius = 0.35
 bottom_radius = 0.4
 height = 0.1
 

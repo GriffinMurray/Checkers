@@ -8,7 +8,8 @@ func get_button():
 
 func start_screen() -> void:
 	show()
-	$Labels/StartText.text = "Press Start button to begin"
+	$Labels/StartText.text = """Left click to select piece/square, 
+	right click to cancel selection."""
 	$StartButton.text = "Start"
 	
 func update_score(score) -> void:

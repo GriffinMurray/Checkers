@@ -4,6 +4,7 @@ class_name Piece
 
 signal hovering(piece: Piece)
 signal stop_hovering(piece: Piece)
+signal moved(piece: Piece)
 
 var color_hex
 var base_color: Color
@@ -15,6 +16,9 @@ var removed = false
 func set_albedo(color):
 	var mat: Material = self.get_child(0).mesh.surface_get_material(0)
 	mat.albedo_color = color
+	if is_in_group("king"):
+		mat = self.get_child(1).mesh.surface_get_material(0)
+		mat.albedo_color = color
 	
 func highlight():
 	set_albedo(highlight_color)
@@ -30,17 +34,16 @@ func set_parent_square(s) -> void:
 func move(target) -> void:
 	target.move_piece(self)
 	set_parent_square(target)
+	moved.emit(self)
 	
 func jump(jumped_piece, target) -> void:
-	move(target)
 	jumped_piece.removed = true
 	jumped_piece.queue_free()
+	move(target)
+
 	
 func _on_mouse_entered() -> void:
 	hovering.emit(self)
 	
 func _on_mouse_exited() -> void:
 	stop_hovering.emit(self)
-
-
-	

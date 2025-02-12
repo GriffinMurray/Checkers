@@ -4,8 +4,8 @@ var game_types = ["checkers", "chess"]
 var game_states = ["start", "move", "end"]
 var player_turns = ["white", "black"]
 
-var score: Array = [0,0]
 var multiple_jumping: bool = false
+var score: Array = [0,0]
 
 func _ready() -> void:
 	start()
@@ -27,9 +27,8 @@ func _input(event):
 											Globals.get_selected_square(),
 											multiple_jumping)
 			elif event.button_index == MOUSE_BUTTON_RIGHT:
-				if not Globals.get_mandatory_jumping():
-					$Board.unselect_piece()
-					Globals.set_game_state(game_states[0])
+				$Board.unselect_piece()
+				Globals.set_game_state(game_states[0])
 	
 func start():
 	var button = UI.get_button()
@@ -74,5 +73,11 @@ func _on_board_piece_jumped(multiple: bool) -> void:
 
 func _on_board_player_lose(player: String) -> void:
 	Globals.set_game_state(game_states[2])
+	if player == "white":
+		score[0] += 1
+	elif player == "black":
+		score[0] += 1
+	UI.update_score(score)
 	UI.game_over(player)
+	$PlayerTurn.hide()
 	

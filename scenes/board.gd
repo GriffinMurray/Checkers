@@ -6,6 +6,8 @@ signal player_lose(player: String)
 
 @export var white_piece: PackedScene = preload("res://scenes/pieces/white_piece.tscn")
 @export var black_piece: PackedScene = preload("res://scenes/pieces/black_piece.tscn")
+@export var white_king: PackedScene = preload("res://scenes/pieces/white_king.tscn")
+@export var black_king: PackedScene
 @export var light_square: PackedScene = preload("res://scenes/squares/light_square.tscn")
 @export var dark_square: PackedScene = preload("res://scenes/squares/dark_square.tscn")
 
@@ -15,7 +17,6 @@ var piece_hovering: Piece
 var square_hovering: Square
 var white_pieces = 0
 var black_pieces = 0
-
 
 
 func _ready() -> void:
@@ -54,6 +55,7 @@ func connect_square_signals() -> void:
 func connect_player_signals(piece: Piece) -> void:
 	piece.connect("hovering", _on_piece_hovering)
 	piece.connect("stop_hovering", _on_piece_stop_hovering)
+	piece.connect("moved", _on_piece_moved)
 
 func initialize_game() -> void:
 	var game = Globals.get_game_type()
@@ -107,9 +109,9 @@ func select_piece() -> void:
 		Globals.set_selected_piece(piece_hovering)
 	
 func unselect_piece() -> void:
-	if Globals.is_piece_selected():
+	if Globals.is_piece_selected() and not Globals.get_mandatory_jumping():
 		Globals.get_selected_piece().remove_highlight()
-		Globals.set_selected_piece(null)
+	Globals.set_selected_piece(null)
 
 func select_square() -> void:
 	if square_hovering != null:
@@ -135,7 +137,6 @@ func move_piece(piece, target, multiple_jumping):
 				piece.highlight()
 			else:
 				piece_jumped.emit(false)
-			
 	elif valid_move(piece, target):
 		piece.move(target)
 		piece.remove_highlight()
@@ -309,4 +310,16 @@ func _on_piece_stop_hovering(piece: Piece) -> void:
 		piece.remove_highlight()
 	piece_hovering = null
 
+func _on_piece_moved(piece: Piece) -> void:
+	if not piece.is_in_group("king"):
+		var square = piece.get_parent_square()
+		if piece.is_in_group("white"):
+			if get_square_index(square)[0] == board_array.size()-1:
+				square.remove_piece()
+				var king = white_king.instantiate()
+				square.set_piece(king)
+		elif piece.is_in_group("black"):
+			if get_square_index(square)[0] == 0:
+				square.remove_piece()
+				#black king
 # TODO generate board procedurally

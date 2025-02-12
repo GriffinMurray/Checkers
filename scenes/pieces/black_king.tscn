@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://bsf7lmfvtcqt"]
+
+[ext_resource type="PackedScene" uid="uid://btx8017ntuu3b" path="res://scenes/pieces/piece.tscn" id="1_bsmjm"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e52k4"]
+albedo_color = Color(0.0352941, 0.0352941, 0.0352941, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_7e63k"]
+material = SubResource("StandardMaterial3D_e52k4")
+top_radius = 0.35
+bottom_radius = 0.4
+height = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bj8kj"]
+resource_local_to_scene = true
+albedo_color = Color(0.0352941, 0.0352941, 0.0352941, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_7bgg5"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_bj8kj")
+top_radius = 0.35
+bottom_radius = 0.4
+height = 0.1
+
+[node name="Piece" instance=ExtResource("1_bsmjm")]
+
+[node name="MeshInstance3D" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("CylinderMesh_7e63k")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+mesh = SubResource("CylinderMesh_7bgg5")

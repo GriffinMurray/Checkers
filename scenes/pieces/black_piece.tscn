@@ -13,7 +13,7 @@ rim_tint = 1.0
 [sub_resource type="CylinderMesh" id="CylinderMesh_t54r1"]
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_dobpx")
-top_radius = 0.4
+top_radius = 0.35
 bottom_radius = 0.4
 height = 0.1
 
