@@ -2,15 +2,12 @@
 
 [ext_resource type="PackedScene" uid="uid://btx8017ntuu3b" path="res://scenes/pieces/piece.tscn" id="1_dclmg"]
 [ext_resource type="Script" path="res://scenes/pieces/white_piece.gd" id="2_hfhnr"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_auraa"]
-resource_local_to_scene = true
-albedo_color = Color(0.800491, 0.800491, 0.800491, 1)
+[ext_resource type="Material" uid="uid://bdu0p77yhn5bm" path="res://scenes/pieces/white_piece.tres" id="3_agerx"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_v7ypo"]
 resource_local_to_scene = true
 lightmap_size_hint = Vector2i(14, 8)
-material = SubResource("StandardMaterial3D_auraa")
+material = ExtResource("3_agerx")
 top_radius = 0.35
 bottom_radius = 0.4
 height = 0.1
