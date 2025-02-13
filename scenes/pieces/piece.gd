@@ -40,7 +40,21 @@ func jump(jumped_piece, target) -> void:
 	jumped_piece.removed = true
 	jumped_piece.queue_free()
 	move(target)
-
+	
+func get_squares_in_range() -> Array:
+	var in_range = []
+	if is_in_group("king"):
+		in_range.append([1,-1])
+		in_range.append([1,1])
+		in_range.append([-1,-1])
+		in_range.append([-1,1])
+	elif is_in_group("white"):
+		in_range.append([1,-1])
+		in_range.append([1,1])
+	elif is_in_group("black"):
+		in_range.append([-1,-1])
+		in_range.append([-1,1])
+	return in_range
 	
 func _on_mouse_entered() -> void:
 	print(self)
@@ -48,3 +62,4 @@ func _on_mouse_entered() -> void:
 	
 func _on_mouse_exited() -> void:
 	stop_hovering.emit(self)
+	
