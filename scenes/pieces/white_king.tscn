@@ -1,26 +1,19 @@
-[gd_scene load_steps=7 format=3 uid="uid://du7cms0esvede"]
+[gd_scene load_steps=6 format=3 uid="uid://du7cms0esvede"]
 
 [ext_resource type="PackedScene" uid="uid://btx8017ntuu3b" path="res://scenes/pieces/piece.tscn" id="1_s317j"]
 [ext_resource type="Script" path="res://scenes/pieces/white_piece.gd" id="2_337d1"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iqgsr"]
-resource_local_to_scene = true
-albedo_color = Color(0.8, 0.8, 0.8, 1)
+[ext_resource type="Material" uid="uid://bdu0p77yhn5bm" path="res://scenes/pieces/white_piece.tres" id="3_woehx"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_m8xnk"]
 resource_local_to_scene = true
-material = SubResource("StandardMaterial3D_iqgsr")
+material = ExtResource("3_woehx")
 top_radius = 0.375
 bottom_radius = 0.4
 height = 0.1
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4mle7"]
-resource_local_to_scene = true
-albedo_color = Color(0.8, 0.8, 0.8, 1)
-
 [sub_resource type="CylinderMesh" id="CylinderMesh_c0u6d"]
 resource_local_to_scene = true
-material = SubResource("StandardMaterial3D_4mle7")
+material = ExtResource("3_woehx")
 top_radius = 0.375
 bottom_radius = 0.4
 height = 0.1

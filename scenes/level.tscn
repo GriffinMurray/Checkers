@@ -1,18 +1,31 @@
-[gd_scene load_steps=5 format=3 uid="uid://d01kqxttyhxmd"]
+[gd_scene load_steps=8 format=3 uid="uid://d01kqxttyhxmd"]
 
 [ext_resource type="Script" path="res://scenes/level.gd" id="1_dr13x"]
 [ext_resource type="PackedScene" uid="uid://bp57edr303kmv" path="res://scenes/board.tscn" id="1_wu1hg"]
 [ext_resource type="PackedScene" uid="uid://mp4bbjd18s2n" path="res://scenes/player.tscn" id="3_e3fpk"]
 [ext_resource type="PackedScene" uid="uid://jj1j6oeiijb0" path="res://scenes/player_turn.tscn" id="4_4e8vk"]
 
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_37t54"]
+
+[sub_resource type="Sky" id="Sky_a2f7i"]
+sky_material = SubResource("ProceduralSkyMaterial_37t54")
+
+[sub_resource type="Environment" id="Environment_8llqm"]
+background_mode = 2
+sky = SubResource("Sky_a2f7i")
+ssao_enabled = true
+
 [node name="Level" type="Node3D"]
 script = ExtResource("1_dr13x")
 
-[node name="PlayerTurn" parent="." instance=ExtResource("4_4e8vk")]
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+transform = Transform3D(-0.866024, -0.433016, 0.250001, 0, 0.499998, 0.866026, -0.500003, 0.749999, -0.43301, 0, 0, 0)
 shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_8llqm")
+
+[node name="PlayerTurn" parent="." instance=ExtResource("4_4e8vk")]
 
 [node name="Board" parent="." instance=ExtResource("1_wu1hg")]
 

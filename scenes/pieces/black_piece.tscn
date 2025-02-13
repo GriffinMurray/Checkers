@@ -2,17 +2,11 @@
 
 [ext_resource type="PackedScene" uid="uid://btx8017ntuu3b" path="res://scenes/pieces/piece.tscn" id="1_484fo"]
 [ext_resource type="Script" path="res://scenes/pieces/black_piece.gd" id="2_e1hwk"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dobpx"]
-resource_local_to_scene = true
-albedo_color = Color(0.0352941, 0.0352941, 0.0352941, 1)
-emission = Color(1, 1, 1, 1)
-emission_energy_multiplier = 0.0
-rim_tint = 1.0
+[ext_resource type="Material" uid="uid://cohgymt7t3fxf" path="res://scenes/pieces/black_piece.tres" id="3_be4et"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_t54r1"]
 resource_local_to_scene = true
-material = SubResource("StandardMaterial3D_dobpx")
+material = ExtResource("3_be4et")
 top_radius = 0.35
 bottom_radius = 0.4
 height = 0.1
@@ -23,6 +17,3 @@ script = ExtResource("2_e1hwk")
 [node name="MeshInstance3D" parent="." index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
 mesh = SubResource("CylinderMesh_t54r1")
-
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
