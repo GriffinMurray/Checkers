@@ -24,8 +24,7 @@ func _input(event):
 				$Board.select_square()
 				if (Globals.is_piece_selected() and Globals.is_square_selected()):
 						$Board.move_piece(Globals.get_selected_piece(), 
-											Globals.get_selected_square(),
-											multiple_jumping)
+											Globals.get_selected_square())
 			elif event.button_index == MOUSE_BUTTON_RIGHT:
 				$Board.unselect_piece()
 				Globals.set_game_state(game_states[0])

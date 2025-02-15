@@ -4,7 +4,6 @@ class_name Square
 
 signal hovering(square: Square)
 signal stop_hovering(square: Square)
-signal piece_spawned(piece: Piece)
 
 var color_hex
 var base_color: Color

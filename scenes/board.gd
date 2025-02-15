@@ -37,14 +37,8 @@ func generate_movable_pieces_array() -> void:
 			movable_pieces.append(piece)
 			piece.highlight()
 			Globals.set_mandatory_jumping(true)
-	if movable_pieces.size() == 1:
-		Globals.set_selected_piece(movable_pieces[0])
-		Globals.set_game_state("move")
 	if movable_pieces.size() == 0:
-		#print(get_tree().get_nodes_in_group(Globals.get_player_turn()))
 		for piece in get_tree().get_nodes_in_group(Globals.get_player_turn()):
-			if piece.is_in_group("king"):
-				print("king movable")
 			movable_pieces.append(piece)
 		Globals.set_mandatory_jumping(false)
 			
@@ -64,44 +58,62 @@ func connect_player_signals(piece: Piece) -> void:
 func initialize_game() -> void:
 	var game = Globals.get_game_type()
 	if game == "checkers":
-		initialize_checkers()
+		initialize_checkers(0)
 	if game == "chess":
 		initialize_chess()
 		
 #set up initial configuration of a default game of checkers on an 8x8 board
-func initialize_checkers() -> void:
-	var size = board_array.size()
-	for row in range(0, size):
-		for col in range(0, size):
-			var square = board_array[row][col]
-			# check if square is dark
-			if square.is_in_group("dark_squares"):
-				square.remove_piece()
-				var piece: Piece
-				#if in first three rows then spawn white piece
-				if (0 <= row and row <= 2):
-					piece = spawn_piece("white")
-				#if in last three rows then spawn white piece
-				elif (size-3 <= row and row <= size-1):
-					piece = spawn_piece("black")
-				if (piece != null):
-					square.set_piece(piece)
-					piece.set_parent_square(square)
-					connect_player_signals(piece)
+func initialize_checkers(config: int) -> void:
+	if config == 0:
+		var size = board_array.size()
+		for row in range(0, size):
+			for col in range(0, size):
+				var square = board_array[row][col]
+				# check if square is dark
+				if square.is_in_group("dark_squares"):
+					square.remove_piece()
+					var piece: Piece
+					#if in first three rows then spawn white piece
+					if (0 <= row and row <= 2):
+						piece = spawn_piece("white")
+					#if in last three rows then spawn white piece
+					elif (size-3 <= row and row <= size-1):
+						piece = spawn_piece("black")
+					if (piece != null):
+						square.set_piece(piece)
+						piece.set_parent_square(square)
+						connect_player_signals(piece)
+	elif config == 1:
+		var size = board_array.size()
+		for row in range(0, size):
+			for col in range(0, size):
+				var square = board_array[row][col]
+				# check if square is dark
+				if square.is_in_group("dark_squares"):
+					square.remove_piece()
+					var piece: Piece
+					if row == 0 and col == 0:
+						piece = spawn_piece("white")
+					elif row == 1 and col == 1:
+						piece = spawn_piece("black")
+					if (piece != null):
+						square.set_piece(piece)
+						piece.set_parent_square(square)
+						connect_player_signals(piece)
+						
+		
 
 func initialize_chess() -> void:
 	pass
 	
-func spawn_piece(str):
-	if str == "white":
-		white_pieces += 1
+func spawn_piece(s):
+	if s == "white":
 		return white_piece.instantiate()
-	elif str == "black":
-		black_pieces += 1
+	elif s == "black":
 		return black_piece.instantiate()
-	elif str == "white_king":
+	elif s == "white_king":
 		return white_king.instantiate()
-	elif str == "black_king":
+	elif s == "black_king":
 		return black_king.instantiate()
 		
 
@@ -125,7 +137,7 @@ func unselect_square() -> void:
 		Globals.get_selected_square().remove_highlight()
 		Globals.set_selected_square(null)
 	
-func move_piece(piece, target, multiple_jumping):
+func move_piece(piece, target):
 	var source = piece.get_parent_square()
 	if must_jump(piece):
 		if valid_jump(piece, target):
@@ -133,7 +145,7 @@ func move_piece(piece, target, multiple_jumping):
 				p.remove_highlight()
 			var jumped_piece = get_jumped_piece(piece.get_parent_square(), target)
 			piece.jump(jumped_piece, target)
-			update_pieces(jumped_piece.get_groups()[0])
+			update_pieces(jumped_piece)
 			if must_jump_again(piece, source):
 				piece_jumped.emit(true)
 				piece.highlight()
@@ -145,14 +157,12 @@ func move_piece(piece, target, multiple_jumping):
 		piece_moved.emit()
 
 func must_jump(piece):
-	var move_options = valid_move_options(piece)
 	var jump_options = valid_jump_options(piece)
 	if jump_options.size() > 0:
 		return true
 	return false
 	
 func must_jump_again(piece, source):
-	var move_options = valid_move_options(piece)
 	var jump_options = valid_jump_options(piece)
 	jump_options.erase(source)
 	if jump_options.size() > 0:
@@ -166,24 +176,27 @@ func valid_move(piece, target):
 	return false
 	
 func valid_jump(piece, target):
-	var source = piece.get_parent_square()
-	var move_options = valid_move_options(piece)
 	var jump_options = valid_jump_options(piece)
 	if target in jump_options:
 		return true
 	return false
 
-func update_pieces(group):
+func update_pieces(piece):
+	var group
+	if piece.is_in_group("black"):
+		group = "black"
+	elif piece.is_in_group("white"):
+		group = "white"
+	var pieces = get_tree().get_nodes_in_group(group)
+	if piece in pieces:
+		pieces.erase(piece)
 	if group == "black":
-		black_pieces -= 1
-		if black_pieces <= 0:
-			player_lose.emit("black")
-			pass
+		if pieces.size() <= 0:
+			player_lose.emit(group)
 	elif group == "white":
-		white_pieces -= 1
-		if white_pieces <= 0:
-			player_lose.emit("white")
-			pass
+		if pieces.size() <= 0:
+			player_lose.emit(group)
+	
 			
 func get_jumped_piece(source: Square, target: Square) -> Piece:
 	var jumped_square_index = []
@@ -194,7 +207,7 @@ func get_jumped_piece(source: Square, target: Square) -> Piece:
 								+ (target_index[0] - source_index[0])/2)
 	jumped_square_index.append(source_index[1] 
 								+ (target_index[1] - source_index[1])/2)
-	
+								
 	var jumped_square: Square = board_array[jumped_square_index[0]][jumped_square_index[1]]
 	var jumped_piece = jumped_square.piece
 	return jumped_piece
@@ -222,51 +235,23 @@ func is_on_board(index: Array):
 			return true
 	return false
 
-func get_adjacent_squares(piece, square) -> Array:
+func get_adjacent_squares(piece) -> Array:
 	var squares = []
+	var square = piece.get_parent_square()
 	var index = get_square_index(square)
-	# if not on the top edge
-	if piece.is_in_group("king"):
-		if board_array.size()-2 >= index[0]:
-			# if not on the right edge
-			if board_array[index[0]].size()-2 >= index[1]:
-				#get top right square
-				squares.append(board_array[index[0]+1][index[1]+1])
-			# if not on the left edge
-			if 1 <= index[1]:
-				# get top left square
-				squares.append(board_array[index[0]+1][index[1]-1])
-		# if not on the bottom edge
-		if 1 <= index[0]:
-			# if not on the right edge
-			if board_array[index[0]].size()-2 >= index[1]:
-				#get bottom right square
-				squares.append(board_array[index[0]-1][index[1]+1])
-			if 1 <= index[1]:
-				squares.append(board_array[index[0]-1][index[1]-1])
-	elif piece.is_in_group("white"):
-		if board_array.size()-2 >= index[0]:
-			# if not on the right edge
-			if board_array[index[0]].size()-2 >= index[1]:
-				#get top right square
-				squares.append(board_array[index[0]+1][index[1]+1])
-			# if not on the left edge
-			if 1 <= index[1]:
-				# get top left square
-				squares.append(board_array[index[0]+1][index[1]-1])
-	elif piece.is_in_group("black"):
-		if 1 <= index[0]:
-			# if not on the right edge
-			if board_array[index[0]].size()-2 >= index[1]:
-				#get bottom right square
-				squares.append(board_array[index[0]-1][index[1]+1])
-			if 1 <= index[1]:
-				squares.append(board_array[index[0]-1][index[1]-1])
+	# get players allowable moves 
+	var player_moves = piece.get_squares_in_range()
+	for move in player_moves:
+		var target = []
+		target.append(index[0]+move[0])
+		target.append(index[1]+move[1])
+		if is_on_board(target):
+			squares.append(board_array[target[0]][target[1]])
 	return squares
 
 func valid_move_options(piece) -> Array:
 	var options = []
-	var adjacent_squares = get_adjacent_squares(piece, piece.get_parent_square())
+	var adjacent_squares = get_adjacent_squares(piece)
 	for square in adjacent_squares:
 		if not square.has_piece():
 			options.append(square)
@@ -275,7 +260,7 @@ func valid_move_options(piece) -> Array:
 func valid_jump_options(piece) -> Array:
 	var options = []
 	var source = piece.get_parent_square()
-	var adjacent_squares = get_adjacent_squares(piece, piece.get_parent_square())
+	var adjacent_squares = get_adjacent_squares(piece)
 	for square in adjacent_squares:
 		if square.has_piece():
 			# if pieces are in different groups
@@ -286,7 +271,6 @@ func valid_jump_options(piece) -> Array:
 						(behind_square != null and 
 						behind_square.piece.removed == true)):
 					options.append(behind_square)
-						
 	return options
 
 func _on_square_hovering(square: Square) -> void:
@@ -299,7 +283,6 @@ func _on_square_stop_hovering(square: Square) -> void:
 	square.remove_highlight()
 	
 func _on_piece_hovering(piece: Piece) -> void:
-	print(piece in movable_pieces)
 	if (piece.is_in_group(Globals.player_turn) and 
 			Globals.get_game_state() == "start" and
 			piece in movable_pieces):
@@ -323,8 +306,6 @@ func _on_piece_moved(piece: Piece) -> void:
 				square.set_piece(king)
 				king.set_parent_square(square)
 				connect_player_signals(king)
-				print(get_tree().get_nodes_in_group(Globals.get_player_turn()))
-				print("king:", get_tree().get_nodes_in_group("king"))
 		elif piece.is_in_group("black"):
 			if get_square_index(square)[0] == 0:
 				square.remove_piece()
@@ -332,7 +313,5 @@ func _on_piece_moved(piece: Piece) -> void:
 				square.set_piece(king)
 				king.set_parent_square(square)
 				connect_player_signals(king)
-				print(get_tree().get_nodes_in_group(Globals.get_player_turn()))
-				print("king:", get_tree().get_nodes_in_group("king"))
 	
 # TODO generate board procedurally

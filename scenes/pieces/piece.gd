@@ -57,7 +57,6 @@ func get_squares_in_range() -> Array:
 	return in_range
 	
 func _on_mouse_entered() -> void:
-	print(self)
 	hovering.emit(self)
 	
 func _on_mouse_exited() -> void:

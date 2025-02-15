@@ -19,8 +19,8 @@ func is_square_selected():
 	return selected_square != null
 func get_selected_square():
 	return selected_square
-func set_selected_square(str) -> void:
-	selected_square = str
+func set_selected_square(s) -> void:
+	selected_square = s
 	
 func get_mandatory_jumping():
 	return mandatory_jumping
@@ -29,18 +29,18 @@ func set_mandatory_jumping(b: bool):
 	
 func get_game_type():
 	return game_type
-func set_game_type(str) -> void:
-	game_type = str
+func set_game_type(s) -> void:
+	game_type = s
 	
 func get_game_state():
 	return game_state
-func set_game_state(str) -> void:
-	game_state = str
+func set_game_state(s) -> void:
+	game_state = s
 	
 func get_player_turn():
 	return player_turn
-func set_player_turn(str) -> void:
-	player_turn = str
+func set_player_turn(s) -> void:
+	player_turn = s
 	
 func toggle_player_turn() -> void:
 	if get_player_turn() == "white":
